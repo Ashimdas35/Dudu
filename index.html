@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Birthday Surprise 💛</title>
+	<style>
+		:root {
+			--pink: #ff8fb3;
+			--yellow: #ffe58a;
+			--ink: #493b52;
+			--cream: #fff8ec;
+		}
+
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			margin: 0;
+			min-height: 100vh;
+			overflow-x: hidden;
+			font-family: "Trebuchet MS", sans-serif;
+			color: var(--ink);
+			background: linear-gradient(135deg, #fff1f6, #fffbe8);
+		}
+
+		.wrap {
+			width: min(960px, 92%);
+			margin: auto;
+			padding: 32px 0 60px;
+			text-align: center;
+		}
+
+		.hero {
+			position: relative;
+			padding: 30px 18px 18px;
+		}
+
+		h1 {
+			margin: 8px 0;
+			font-size: clamp(1.4rem, 5vw, 3.8rem);
+			color: #ed6795;
+			text-shadow: 4px 4px #fff;
+		}
+
+		h2 {
+			font-size: clamp(1.3rem, 4vw, 2rem);
+			margin: 8px;
+		}
+
+		p {
+			font-size: 1.1rem;
+			line-height: 1.6;
+		}
+
+		.characters {
+			display: flex;
+			justify-content: center;
+			align-items: end;
+			gap: 10px;
+			margin: 25px auto 5px;
+		}
+
+		.bubu,
+		.dudu {
+			position: relative;
+			width: 140px;
+			height: 170px;
+			border-radius: 48% 48% 42% 42%;
+			box-shadow: inset -8px -10px #0001, 0 10px 18px #d77a9840;
+		}
+
+		.bubu {
+			background: #f3c9a7;
+		}
+
+		.dudu {
+			background: #6b566e;
+		}
+
+		.bubu:before,
+		.dudu:before {
+			content: "";
+			position: absolute;
+			top: -25px;
+			left: 18px;
+			width: 43px;
+			height: 62px;
+			border-radius: 80% 20%;
+			background: inherit;
+			transform: rotate(-28deg);
+			box-shadow: 61px 18px 0 0 var(--ear);
+		}
+
+		.bubu {
+			--ear: #f3c9a7;
+		}
+
+		.dudu {
+			--ear: #6b566e;
+		}
+
+		.face {
+			position: absolute;
+			inset: 65px 0 0;
+		}
+
+		.eye {
+			display: inline-block;
+			width: 10px;
+			height: 15px;
+			background: #33283c;
+			border-radius: 50%;
+			margin: 0 15px;
+		}
+
+		.mouth {
+			width: 22px;
+			height: 10px;
+			border-bottom: 3px solid #33283c;
+			border-radius: 50%;
+			margin: 15px auto;
+		}
+
+		.bow {
+			position: absolute;
+			top: 3px;
+			right: 4px;
+			font-size: 35px;
+			transform: rotate(15deg);
+		}
+
+		.dudubow {
+			position: absolute;
+			top: 3px;
+			right: 4px;
+			font-size: 35px;
+			transform: rotate(50deg);
+		}
+
+		.card {
+			background: #ffffffc9;
+			border: 3px solid #fff;
+			border-radius: 28px;
+			padding: 24px;
+			box-shadow: 0 10px 35px #d983a633;
+			backdrop-filter: blur(5px);
+		}
+
+		button {
+			border: 0;
+			border-radius: 999px;
+			padding: 14px 22px;
+			margin: 8px;
+			color: var(--ink);
+			background: var(--yellow);
+			font: inherit;
+			font-weight: bold;
+			cursor: pointer;
+			box-shadow: 0 5px 0 #e9c95c;
+			transition: .2s;
+		}
+
+		button:hover {
+			transform: translateY(-3px) rotate(-2deg);
+		}
+
+		button:active {
+			transform: translateY(2px);
+			box-shadow: none;
+		}
+
+		#message {
+			min-height: 52px;
+			margin: 15px auto 0;
+			font-weight: bold;
+			color: #d85482;
+		}
+
+		.secret {
+			display: none;
+			animation: pop .5s ease;
+		}
+
+		.secret.show {
+			display: block;
+		}
+
+		.slideshow {
+			display: none;
+			animation: pop .5s ease;
+		}
+
+		.slideshow.show {
+			display: block;
+		}
+
+		.meter {
+			height: 18px;
+			background: #ffe0e9;
+			border-radius: 20px;
+			overflow: hidden;
+			margin: 18px auto;
+			max-width: 420px;
+		}
+
+		#fill {
+			display: block;
+			width: 0%;
+			height: 100%;
+			background: linear-gradient(90deg, #ff91b4, #ffd55f);
+			transition: width .5s;
+		}
+
+		.float {
+			position: fixed;
+			pointer-events: none;
+			animation: rise 4s linear forwards;
+			font-size: 24px;
+			z-index: 5;
+		}
+
+		.balloon {
+			position: fixed;
+			bottom: -100px;
+			width: 58px;
+			height: 72px;
+			border-radius: 50% 50% 45% 45%;
+			z-index: 4;
+			cursor: pointer;
+			animation: balloonUp 7s linear forwards;
+			box-shadow: inset -10px -8px #0002;
+		}
+
+		.balloon:after {
+			content: "";
+			position: absolute;
+			left: 27px;
+			top: 70px;
+			width: 2px;
+			height: 100px;
+			background: #987;
+		}
+
+		.balloon:before {
+			content: "";
+			position: absolute;
+			bottom: -7px;
+			left: 24px;
+			border: 6px solid transparent;
+			border-top-color: inherit;
+		}
+
+		.quote {
+			position: fixed;
+			left: 40%;
+			top: 62%;
+			transform: translate(-50%, -50%) scale(.4);
+			transform-origin: top center;
+			opacity: 0;
+			z-index: 10;
+			width: min(90%, 500px);
+			padding: 28px;
+			border: 4px solid white;
+			border-radius: 28px;
+			background: #fff9;
+			color: #d85482;
+			font-size: clamp(1rem, 1.5vw, 0.8rem);
+			font-weight: bold;
+			box-shadow: 0 12px 40px #d77a9866;
+			backdrop-filter: blur(12px);
+			-webkit-backdrop-filter: blur(12px);
+			text-align: center;
+			pointer-events: none;
+		}
+
+		.quote img {
+			display: block;
+			width: min(100%, 240px);
+			aspect-ratio: 3 / 4;
+			object-fit: cover;
+			margin: 0 auto 12px;
+			border: 4px solid #fff;
+			border-radius: 16px;
+		}
+
+		.quote span {
+			display: block;
+			padding: 9px 12px;
+			border-radius: 12px;
+			background: #ffffffdf;
+			text-shadow: 0 1px 1px #fff;
+			box-shadow: 0 4px 14px #d77a9833;
+		}
+
+		.quote.show {
+			animation: quotePop 2.8s ease forwards;
+		}
+
+		/* .slideshow { margin:28px auto 0; max-width:650px; overflow:hidden; border-radius:24px; border:6px solid white; box-shadow:0 8px 25px #d77a9844; background:#fff; } */
+		.slideshow {
+			margin: 0 auto 16px;
+			width: min(100%, 240px);
+			overflow: hidden;
+			aspect-ratio: 3 / 4;
+			object-fit: cover;
+			border: 4px solid white;
+			border-radius: 18px;
+			box-shadow: 0 8px 25px #d77a9844;
+			background: #fff;
+		}
+
+		.slides {
+			display: flex;
+			transition: transform .6s ease;
+		}
+
+		.slide {
+			min-width: 100%;
+			height: 280px;
+			object-fit: cover;
+			display: block;
+		}
+
+		.dots {
+			margin: 12px;
+			color: #ed6795;
+			letter-spacing: 8px;
+		}
+
+		/*  This section is for mobile responsiveness */
+		@media (max-width:600px) {
+			.wrap {
+				width: 100%;
+				padding: 16px 12px 40px;
+			}
+
+			.hero {
+				padding: 18px 8px 10px;
+			}
+
+			.characters {
+				gap: 6px;
+				margin-top: 16px;
+			}
+
+			.bubu,
+			.dudu {
+				width: 110px;
+				height: 135px;
+			}
+
+			.bubu:before,
+			.dudu:before {
+				top: -20px;
+				left: 14px;
+				width: 34px;
+				height: 50px;
+				box-shadow: 48px 14px 0 0 var(--ear);
+			}
+
+			.face {
+				inset: 52px 0 0;
+			}
+
+			.eye {
+				margin: 0 10px;
+			}
+
+			.bow,
+			.dudubow {
+				font-size: 28px;
+			}
+
+			h1 {
+				font-size: clamp(2.1rem, 12vw, 3.5rem);
+				line-height: 1.05;
+			}
+
+			h2 {
+				line-height: 1.2;
+			}
+
+			p {
+				font-size: 1rem;
+			}
+
+			.card {
+				padding: 18px 12px;
+				border-radius: 22px;
+			}
+
+			button {
+				max-width: calc(100% - 16px);
+				padding: 13px 16px;
+			}
+
+			.slideshow {
+				margin-left: 0;
+				margin-right: 0;
+				border-width: 4px;
+			}
+
+			.slide {
+				height: 220px;
+			}
+
+			.balloon {
+				transform: scale(.85);
+			}
+		}
+
+		@keyframes rise {
+			from {
+				transform: translateY(0) rotate(0);
+				opacity: 1;
+			}
+
+			to {
+				transform: translateY(-110vh) rotate(360deg);
+				opacity: 0;
+			}
+		}
+
+		@keyframes pop {
+			from {
+				transform: scale(.8);
+				opacity: 0;
+			}
+
+			to {
+				transform: scale(1);
+				opacity: 1;
+			}
+		}
+
+		@keyframes balloonUp {
+			from {
+				transform: translateY(0) rotate(-8deg);
+			}
+
+			to {
+				transform: translateY(-125vh) rotate(12deg);
+			}
+		}
+
+		@keyframes quotePop {
+			0% {
+				opacity: 0;
+				transform: translate(-50%, 0) scale(.4);
+			}
+
+			18%,
+			75% {
+				opacity: 1;
+				transform: translate(-50%, 0) scale(1);
+			}
+
+			100% {
+				opacity: 0;
+				transform: translate(-50%, 0) scale(1.15);
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<main class="wrap">
+		<section class="hero">
+			<div class="characters">
+				<div class="bubu"><span class="bow">🎀</span>
+					<div class="face"><i class="eye"></i><i class="eye"></i>
+						<div class="mouth"></div>
+					</div>
+				</div>
+				<div class="dudu"><span class="dudubow"></span>
+					<div class="face"><i class="eye"></i><i class="eye"></i>
+						<div class="mouth"></div>
+					</div>
+				</div>
+			</div>
+			<h1>Happy Birthday, Pookie!🎂🎀</h1>
+			<p>Bubu and Dudu have a tiny surprise mission for their favourite person.</p>
+		</section>
+		<section class="card">
+			<h2>Unlock your birthday magic ✨</h2>
+			<p>Complete the very serious love-o-meter by pressing the button!</p>
+			<div class="meter"><span id="fill"></span></div>
+			<button id="boost">Send love 💌</button><button id="gift">Open mystery gift 🎁</button>
+			<div id="message">Waiting for a birthday smile...</div>
+			<div class="slideshow" aria-label="Bubu and Dudu memories">
+				<div class="slides" id="slides">
+					<img class="slide" src="src\slide\1.jpg" alt="Birthday cake with candles">
+					<img class="slide" src="src\slide\2.jpg" alt="Birthday cake with candles">
+					<img class="slide" src="src\slide\3.jpg" alt="Birthday cake with candles">
+					<img class="slide" src="src\slide\4.jpg" alt="Birthday cake with candles">
+				</div>
+				<div class="dots" id="dots">● ○ ○ ○</div>
+			</div>
+			<div id="secret" class="secret">
+				<h2>Tadaaaa, here is your birthday twin!💖</h2>
+				<p>You are loved more than all the stars, cakes, and cuddles in the universe.
+					Today is all about you! 🌟</p><button id="confetti">More confetti!</button>
+			</div>
+		</section>
+	</main>
+	<audio id="bgMusic" autoplay loop>
+		<source src="src/Birthday.mp3" type="audio/mp3">
+	</audio>
+	<div id="quote" class="quote"></div>
+	<script>
+		document.body.addEventListener('click', () => { const music = document.getElementById('bgMusic'); bgMusic.volume = 0.3; music.play(); });
+		const fill = document.querySelector('#fill'), message = document.querySelector('#message'), secret = document.querySelector('#secret'), slideshow = document.querySelector('.slideshow'); let love = 0;
+		const words = ['Bubu sends a squishy hug! 🤗', 'Dudu says you are absolutely adorable! 🐻', 'A sprinkle of birthday kisses! 💋', 'Love level: ridiculously high! 💕'];
+		const quotes = ['You make every day sparkle! ✨', 'Bubu and Dudu love you to the moon! 🌙', 'Pop! A balloon full of birthday hugs! 💕', 'Keep smiling, birthday star! 🌟'];
+		// Add folders and filenames here. Browsers cannot list a directory automatically.
+
+
+		const pictureDirectories = ['src\\HER\\']; const pictureNames = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '8.jpg', '9.jpg', '10.jpg'];
+		const pictures = [
+			...pictureDirectories.flatMap(directory => pictureNames.map(name => directory + name))];
+		const quote = document.querySelector('#quote');
+
+
+
+		function floatEmoji(e) { const x = document.createElement('span'); x.className = 'float'; x.textContent = e; x.style.left = Math.random() * 95 + 'vw'; x.style.bottom = '-30px'; document.body.append(x); setTimeout(() => x.remove(), 7000); }
+
+		let slide = 0; setInterval(() => { slide = (slide + 1) % 4; slides.style.transform = `translateX(-${slide * 100}%)`; dots.textContent = ['● ○ ○ ○', '○ ● ○ ○', '○ ○ ● ○', '○ ○ ○ ●'][slide]; }, 3500);
+
+		document.querySelector('#boost').onclick = () => {
+			for (let i = 0; i < 2500; i++) setTimeout(() => floatEmoji(['🎉', '💖', '⭐', '🎂'][i % 4]), i * 600);
+
+			love = Math.min(100, love + 25); fill.style.width = love + '%'; message.textContent = words[Math.floor(Math.random() * words.length)];
+			floatEmoji(['💗', '✨', '🌸', '💛'][Math.floor(Math.random() * 4)]);
+			if (love === 100) {
+				message.textContent = 'Yaaayyyy, now you can open the mystery box!🥳 Do not forget to pop the balloons🎉 ';
+				function balloon() {
+					const b = document.createElement('span'); b.className = 'balloon';
+					b.style.left = Math.random() * 90 + 'vw'; b.style.background = ['#ff8fb3', '#ffe58a', '#b9a5e8', '#9de3d0'][Math.floor(Math.random() * 4)];
+					b.onclick = () => {
+						quote.innerHTML = `<img src="${pictures[Math.floor(Math.random() * pictures.length)]}" alt="Birthday memory"><span>${quotes[Math.floor(Math.random() * quotes.length)]}</span>`;
+						const balloonRect = b.getBoundingClientRect(); b.remove();
+						quote.classList.remove('show'); void quote.offsetWidth; quote.classList.add('show');
+						const positionQuote = () => {
+							const gap = 10, margin = 12, scale = 1.15, width = quote.offsetWidth * scale, height = quote.offsetHeight * scale;
+							const centerX = balloonRect.left + balloonRect.width / 2;
+							const left = Math.max(width / 2 + margin, Math.min(centerX, window.innerWidth - width / 2 - margin));
+							const top = Math.max(margin, Math.min(balloonRect.bottom + gap, window.innerHeight - height - margin));
+							quote.style.left = `${left}px`;
+							quote.style.top = `${top}px`;
+						};
+						const image = quote.querySelector('img'); if (image.complete) requestAnimationFrame(positionQuote);
+						else image.addEventListener('load', positionQuote, { once: true }); for (let i = 0; i < 8; i++) floatEmoji(['🎉', '💖', '✨'][i % 3]);
+					};
+					document.body.append(b); setTimeout(() => b.remove(), 7200);
+				}; setInterval(balloon, 2400);
+			}
+		};
+		document.querySelector('#gift').onclick = () => {
+			if (love === 100) { secret.classList.add('show'); slideshow.classList.add('show'); }
+			else { message.textContent = 'Aaahhhh haaaaa, no cheating! send enough love first! 💖'; }
+		};
+		document.querySelector('#confetti').onclick = () => { for (let i = 0; i < 25; i++) setTimeout(() => floatEmoji(['🎉', '💖', '⭐', '🎂'][i % 4]), i * 60); };
+	</script>
+</body>
+</html>
+
